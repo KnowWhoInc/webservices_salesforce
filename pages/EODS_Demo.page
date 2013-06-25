@@ -1,0 +1,168 @@
+<apex:page controller="KWEODS_Demo_Controller" cache="FALSE">
+
+<apex:form >
+
+<apex:messages />
+<apex:PageMessages />
+
+<apex:pageBlock rendered="{!!bErrorCode}" >
+<apex:pageBlockButtons location="top" >
+<apex:commandButton action="{!getData}" value="Get Data by Address" />
+<apex:commandButton action="{!getDatabyZip4}" value="Get Data by Zip + 4" />
+<apex:commandButton action="{!getDatabyLatLong}" value="Get Data by Long and Lat" />
+<apex:commandButton action="{!reset}" value="Reset Form" />
+</apex:pageBlockButtons>
+
+<apex:pageBlockSection >
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Street Address</apex:outputLabel>
+<apex:inputText tabindex="110" value="{!sparams[0]}"/>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Zip 4</apex:outputLabel>
+<apex:inputText tabindex="160" value="{!sparams[4]}"/>
+</apex:pageBlockSectionItem>
+
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >City</apex:outputLabel>
+<apex:inputText tabindex="120"  value="{!sparams[1]}"/>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Latitude</apex:outputLabel>
+<apex:inputText tabindex="170"  value="{!sparams[5]}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >State</apex:outputLabel>
+<apex:inputText tabindex="130"  value="{!sparams[2]}"/>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Longitude</apex:outputLabel>
+<apex:inputText tabindex="180" value="{!sparams[6]}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >ZipCode</apex:outputLabel>
+<apex:inputText tabindex="140"  value="{!sparams[3]}"/>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Response Code</apex:outputLabel>
+<apex:outputText value="{!kweods.kweodsdata.KnowWho.Customer.ReturnCode}"/>
+</apex:pageBlockSectionItem>
+
+
+
+
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+
+<apex:repeat value="{!kweods.kweodsdata.KnowWho.USGovernment.ElectedOfficials}" var="kwus">
+<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
+<apex:pageBlockSection >
+
+<apex:pageBlockSectionItem >
+<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Name</apex:outputLabel>
+<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Position</apex:outputLabel>
+<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Website</apex:outputLabel>
+<apex:outputLink target="_blank" value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Web Form</apex:outputLabel>
+<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Main Phone Number</apex:outputLabel>
+<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel />
+</apex:pageBlockSectionItem>
+
+<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
+<apex:outputText value="{!kwusstaff.FullName}"/>
+</apex:pageBlockSectionItem>
+</apex:repeat>
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+</apex:repeat>
+
+<apex:repeat value="{!kweods.kweodsdata.KnowWho.StateGovernment.ElectedOfficials}" var="kwus">
+<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
+
+<apex:pageBlockSection >
+
+<apex:pageBlockSectionItem >
+<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel />
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Name</apex:outputLabel>
+<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Position</apex:outputLabel>
+<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Website</apex:outputLabel>
+<apex:outputLink value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Web Form</apex:outputLabel>
+<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel >Main Phone Number</apex:outputLabel>
+<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
+</apex:pageBlockSectionItem>
+
+<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+<apex:pageBlockSectionItem >
+<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
+<apex:outputText value="{!kwusstaff.FullName}"/>
+</apex:pageBlockSectionItem>
+</apex:repeat>
+
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+</apex:repeat>
+
+</apex:form>
+</apex:page>

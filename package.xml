@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>KWEOCS_Demo_Controller</members>
+        <members>KWEODS_Demo_Controller</members>
+        <members>KWEOS_Demo_Controller</members>
+        <members>KW_EOS_Demo2_TESTS</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>EOCS_Demo</members>
+        <members>EODS_Demo</members>
+        <members>EOS_Demo_Custom</members>
+        <name>ApexPage</name>
+    </types>
+    <version>27.0</version>
+</Package>

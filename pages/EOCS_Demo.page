@@ -1,0 +1,171 @@
+<apex:page Controller="KWEOCS_Demo_Controller" tabstyle="EOCS_Demo__tab">
+
+<apex:form >
+<apex:messages />
+<apex:pagemessages />
+
+<apex:actionregion >
+<apex:pageBlock title="Send Request" rendered="{!!bError}" >
+<apex:pageBlockbuttons location="top" >
+<apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
+</apex:pageBlockbuttons>
+
+
+
+<apex:pageBlockSection >
+<apex:pageblocksectionitem >
+
+<apex:outputLabel value="Prefix"/>
+  <apex:outputPanel styleClass="requiredInput" layout="block">
+  <apex:outputPanel styleClass="requiredBlock" layout="block" />
+<apex:selectList required="TRUE" size="1" value="{!finaleocs.kweos__Prefix_Code__c}">
+<apex:selectOptions value="{!kwlists.prefixes}"/>
+</apex:selectList>
+  </apex:outputPanel>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Street Address"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Address1__c}"/>
+</apex:pageblocksectionitem>
+
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="First Name"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__First_Name__c}"/>
+</apex:pageblocksectionitem>
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Street Address (2)"/>
+<apex:inputField value="{!finaleocs.kweos__Address2__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Last Name"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Last_Name__c}"/>
+</apex:pageblocksectionitem>
+<apex:pageblocksectionitem >
+<apex:outputLabel value="City"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__City__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Suffix"/>
+<apex:selectList size="1" value="{!finaleocs.kweos__Suffix_Code__c}">
+<apex:selectOptions value="{!kwlists.suffixes}"/>
+</apex:selectList>
+</apex:pageblocksectionitem>
+<apex:pageblocksectionitem >
+<apex:outputLabel value="State"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__State__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Phone Number"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Phone__c}"/>
+</apex:pageblocksectionitem>
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Zip"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Postal_Code__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Fax"/>
+<apex:inputField value="{!finaleocs.kweos__Fax__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Email"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Email__c}"/>
+</apex:pageblocksectionitem>
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+<apex:pageBlock rendered="{!!bError}" >
+<apex:pageBlockbuttons location="bottom" >
+<apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
+</apex:pageBlockbuttons>
+
+<apex:pageBlockSection columns="1">
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Issue"/>
+
+ <apex:outputPanel styleClass="requiredInput" layout="block">
+ <apex:outputPanel styleClass="requiredBlock" layout="block" />
+
+<apex:selectList size="1" value="{!finaleocs.kweos__Issue_Code__c}" required="true">
+<apex:selectOptions value="{!kwlists.issues}"/>
+</apex:selectList>
+
+</apex:outputPanel>
+
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Subject"/>
+<apex:inputField required="TRUE" value="{!finaleocs.kweos__Subject__c}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Message"/>
+<apex:inputField style="width:400px;height:100px" required="TRUE" value="{!finaleocs.kweos__Message__c}"/>
+</apex:pageblocksectionitem>
+
+</apex:pageBlockSection>
+
+</apex:pageblock>
+</apex:actionregion>
+
+<apex:outputpanel id="thefilters">
+<apex:actionregion >
+<apex:pageblock title="Filters" >
+<apex:pageBlockbuttons >
+<apex:commandbutton value="Show Filters" action="{!showfilters}" reRender="thefilters" rendered="{!!bshowfilters}" />
+<apex:commandbutton value="Hide Filters" action="{!hidefilters}" reRender="thefilters" rendered="{!bshowfilters}" />
+</apex:pageBlockbuttons>
+
+<apex:pageBlockSection rendered="{!bshowfilters}">
+
+<apex:repeat value="{!$ObjectType.kweos__EOCS_Data__c.FieldSets.kweos__Message_Recipient_Fields}" var="f"> 
+
+<apex:pageblocksectionitem >
+        <apex:outputLabel value="{!$ObjectType.kweos__EOCS_Data__c.Fields[f].label}"/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem rendered="{!$ObjectType.kweos__EOCS_Data__c.Fields[f].type = 'boolean'}">
+        <apex:inputCheckbox rendered="{!$ObjectType.kweos__EOCS_Data__c.Fields[f].type = 'boolean'}" value="{!finaleocs[f]}" /><br/>
+</apex:pageblocksectionitem>
+
+<apex:pageblocksectionitem rendered="{!$ObjectType.kweos__EOCS_Data__c.Fields[f].type != 'boolean'}">
+        <apex:inputField rendered="{!$ObjectType.kweos__EOCS_Data__c.Fields[f].type != 'boolean'}" value="{!finaleocs[f]}" /><br/>
+</apex:pageblocksectionitem>
+
+</apex:repeat>
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:actionregion>
+</apex:outputPanel>
+
+<apex:pageBlock title="Responses" >
+<apex:pageblocksection >
+
+<apex:pageblocksectionitem >
+<apex:outputLabel value="Response from Service"/>
+<apex:outputText value="{!sKWReturnCode}"/>
+    </apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+        <apex:outputLabel />
+    </apex:pageblocksectionitem>
+
+<apex:repeat value="{!sContactedCodes}" var="r">
+<apex:pageblocksectionitem >
+<apex:outputText value="{!r}"/>
+<apex:outputText value="{!sContactedCodes[r]}"/>
+</apex:pageblocksectionitem>
+</apex:repeat>
+
+</apex:pageblocksection>
+</apex:pageBlock>
+
+</apex:form>
+</apex:page>
