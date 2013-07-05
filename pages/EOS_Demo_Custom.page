@@ -1,4 +1,11 @@
 <apex:page controller="KWEOS_Demo_Controller" cache="FALSE" sidebar="false" showHeader="FALSE" standardStylesheets="FALSE">
+
+
+<!--This demo page is designed to show how you can buld highly cusomtized pages using the KnowWho Services and Sample Code
+So we override standard styling to demonstrate how we can build a cutom UI and capture petitions. But we can use the same page to also
+send messages via EOCS -->
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"/>
 <script src="https://ajax.microsoft.com/ajax/jquery.ui/1.8.5/jquery-ui.js"/>
 <link rel="stylesheet" type="text/css" media="screen" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css"/>
@@ -13,10 +20,6 @@
 <script type="text/javascript">
        var j$ = jQuery.noConflict();
  
-       j$(document).ready(function(){
-       
-                              
-        });
  </script>  
     
 <apex:form >
@@ -25,6 +28,7 @@
 <apex:PageMessages />
 <div id="awrapper">
 <img src="https://www.knowwho.com/images/kwlogo.jpg" alt="KnowWho Web Services"/>    
+<br/>
 <apex:outputPanel rendered="{!!bShowConfirmation}">
 <apex:outputPanel rendered="{!!bShowEOCSButton}">
 <apex:commandButton action="{!getDatabyAddress}" value="Submit" />
@@ -32,6 +36,7 @@
 <apex:commandButton action="{!reset}" value="Reset Form" />
 <table>
 <tr>
+<!--Note - unlike in EODS sample demo, we are using EOCS Object to capture address so we can re-use for EOCS if required-->
     <td>Street Address</td>
     <td><apex:inputText value="{!finaleocs.kweos__Address1__c}"/></td>
     </tr>
@@ -46,7 +51,7 @@
     <tr>
     <td>ZipCode</td>
     <td><apex:inputText value="{!finaleocs.kweos__Postal_Code__c}"/></td>
-   	 </tr>
+     </tr>
     <tr>
         <td>Zip 4</td>
    
@@ -56,84 +61,92 @@
     </table>
     </apex:outputPanel>    
 <table>
-<tr>
-    <td>
-        <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.FullName}"/>
-    </td>
-    <td>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.FullName}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PositionInformation.Title}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PrimaryOfficeInformation.Phone}        
-    </td>
-    <td>
-        <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.FullName}"/>
-    </td>
-    <td>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.FullName}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PositionInformation.Title}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PrimaryOfficeInformation.Phone}        
-    </td>
-    
-    <td>
-        <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.FullName}"/>
-    </td>
-    <td>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.FullName}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PositionInformation.Title}<br/>
-        {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PrimaryOfficeInformation.Phone}        
-    </td>
+    <tr>
+        <td>
+        <!--Note - unlike in EODS sample demo, we are directly referencing elected officials in object-->
+            <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.FullName}"/>
+        </td>
+        <td>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.FullName}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PositionInformation.Title}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PrimaryOfficeInformation.Phone}        
+        </td>
+        <td>
+            <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.FullName}"/>
+        </td>
+        <td>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.FullName}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PositionInformation.Title}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PrimaryOfficeInformation.Phone}        
+        </td>
+        
+        <td>
+            <img src="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.PhotoUrl}" alt="{!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.FullName}"/>
+        </td>
+        <td>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.FullName}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PositionInformation.Title}<br/>
+            {!kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PrimaryOfficeInformation.Phone}        
+        </td>
     </tr>
        
-    </table>
+</table>
+
     <br/><br/>
+
     <apex:outputPanel rendered="{!bShowEOCSButton}">
+    <!--Note - EODS can co-exist with EOCS - so we can make callout to EODS, 
+    get back officials, and the submit request to those officials via EOCS-->
+    
     <table>
-<tr>
-    <td>First Name</td>
-    <td><apex:inputText value="{!finaleocs.kweos__First_Name__c}"/></td>
-    <td>Street Address</td>
-    <td><apex:inputText value="{!finaleocs.kweos__Address1__c}"/></td>
-    
-    </tr>
-    <tr>
-        <td>Last Name</td>
-        <td><apex:inputText value="{!finaleocs.kweos__Last_Name__c}"/></td>
-    <td>City</td>
-    <td><apex:inputText value="{!finaleocs.kweos__City__c}"/></td>
-    
-        </tr>
-    <tr>
-        <td>Email</td>
-      <td><apex:inputField value="{!finaleocs.kweos__Email__c}"/></td>
-<td>State</td>
-    <td><apex:inputText value="{!finaleocs.kweos__State__c}"/></td>
-  
-        </tr>
-    <tr>
-    <td>Phone Number</td>
-        <td><apex:inputField value="{!finaleocs.kweos__Phone__c}"/></td>
-        <td>Zip Code</td>
-    <td><apex:inputText value="{!finaleocs.kweos__Postal_Code__c}"/></td>
-    </tr>
-    <tr>
+        <tr>
+            <td>First Name</td>
+            <td><apex:inputText value="{!finaleocs.kweos__First_Name__c}"/></td>
+            <td>Street Address</td>
+            <td><apex:inputText value="{!finaleocs.kweos__Address1__c}"/></td>
+            
         </tr>
         <tr>
-        <td colspan="2">    
-    <apex:outputField value="{!finaleocs.kweos__Subject__c}"/>
+            <td>Last Name</td>
+            <td><apex:inputText value="{!finaleocs.kweos__Last_Name__c}"/></td>
+            <td>City</td>
+            <td><apex:inputText value="{!finaleocs.kweos__City__c}"/></td>
+            
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><apex:inputField value="{!finaleocs.kweos__Email__c}"/></td>
+            <td>State</td>
+            <td><apex:inputText value="{!finaleocs.kweos__State__c}"/></td>
+          
+        </tr>
+        <tr>
+            <td>Phone Number</td>
+            <td><apex:inputField value="{!finaleocs.kweos__Phone__c}"/></td>
+            <td>Zip Code</td>
+            <td><apex:inputText value="{!finaleocs.kweos__Postal_Code__c}"/></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td colspan="2">    
+            <apex:outputField value="{!finaleocs.kweos__Subject__c}"/>
             </td>
-            </tr>
-            <tr>
-        <td colspan="2">
+        </tr>
+        <tr>
+            <td colspan="2">
             <apex:inputField style="width:400px;height:100px" required="TRUE" value="{!finaleocs.kweos__Message__c}"/><br/>
-        </td>
+            </td>
         </tr>
-<tr>
-    <td>
-                <apex:commandButton action="{!capturePetition}" value="Sign Petition" /> 
-    </td>
+        <tr>
+            <td>
+            <!--We will invoke petition method in page controller-->
+            <apex:commandButton action="{!capturePetition}" value="Sign Petition" /> 
+            </td>
         </tr>
-        </table>
-    </apex:outputPanel>
+    </table>
+
+</apex:outputPanel>
  </apex:outputPanel>  
     <apex:outputPanel rendered="{!bShowConfirmation}">
         <br/>

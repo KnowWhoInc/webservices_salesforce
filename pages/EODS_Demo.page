@@ -5,7 +5,8 @@
 <apex:messages />
 <apex:PageMessages />
 
-<apex:pageBlock rendered="{!!bErrorCode}" >
+<!--Error Code is returned as TRUE when trial/EODS trial service has not been setup-->
+<apex:pageBlock rendered="{!!bErrorCode}">
 <apex:pageBlockButtons location="top" >
 <apex:commandButton action="{!getData}" value="Get Data by Address" />
 <apex:commandButton action="{!getDatabyZip4}" value="Get Data by Zip + 4" />
@@ -14,153 +15,237 @@
 </apex:pageBlockButtons>
 
 <apex:pageBlockSection >
-
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Street Address</apex:outputLabel>
-<apex:inputText tabindex="110" value="{!sparams[0]}"/>
-</apex:pageBlockSectionItem>
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Zip 4</apex:outputLabel>
-<apex:inputText tabindex="160" value="{!sparams[4]}"/>
-</apex:pageBlockSectionItem>
-
-
-<apex:pageBlockSectionItem >
-<apex:outputLabel >City</apex:outputLabel>
-<apex:inputText tabindex="120"  value="{!sparams[1]}"/>
-</apex:pageBlockSectionItem>
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Latitude</apex:outputLabel>
-<apex:inputText tabindex="170"  value="{!sparams[5]}"/>
-</apex:pageBlockSectionItem>
-
-<apex:pageBlockSectionItem >
-<apex:outputLabel >State</apex:outputLabel>
-<apex:inputText tabindex="130"  value="{!sparams[2]}"/>
-</apex:pageBlockSectionItem>
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Longitude</apex:outputLabel>
-<apex:inputText tabindex="180" value="{!sparams[6]}"/>
-</apex:pageBlockSectionItem>
-
-<apex:pageBlockSectionItem >
-<apex:outputLabel >ZipCode</apex:outputLabel>
-<apex:inputText tabindex="140"  value="{!sparams[3]}"/>
-</apex:pageBlockSectionItem>
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Response Code</apex:outputLabel>
-<apex:outputText value="{!kweods.kweodsdata.KnowWho.Customer.ReturnCode}"/>
-</apex:pageBlockSectionItem>
+	<!--For this demo page, showing how the values can just be simple string variables. But the inputs can also bound to an object -
+	the only requirement is that the final submission to the serivce is in a string format-->
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Street Address</apex:outputLabel>
+		<apex:inputText tabindex="110" value="{!sparams[0]}"/>
+	</apex:pageBlockSectionItem>
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Zip 4</apex:outputLabel>
+		<apex:inputText tabindex="160" value="{!sparams[4]}"/>
+	</apex:pageBlockSectionItem>
 
 
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >City</apex:outputLabel>
+		<apex:inputText tabindex="120"  value="{!sparams[1]}"/>
+	</apex:pageBlockSectionItem>
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Latitude</apex:outputLabel>
+		<apex:inputText tabindex="170"  value="{!sparams[5]}"/>
+	</apex:pageBlockSectionItem>
 
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >State</apex:outputLabel>
+		<apex:inputText tabindex="130"  value="{!sparams[2]}"/>
+	</apex:pageBlockSectionItem>
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Longitude</apex:outputLabel>
+		<apex:inputText tabindex="180" value="{!sparams[6]}"/>
+	</apex:pageBlockSectionItem>
+
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >ZipCode</apex:outputLabel>
+		<apex:inputText tabindex="140"  value="{!sparams[3]}"/>
+	</apex:pageBlockSectionItem>
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Response Code</apex:outputLabel>
+		<apex:outputText value="{!kweods.kweodsdata.KnowWho.Customer.ReturnCode}"/>
+	</apex:pageBlockSectionItem>
+
+	<!--See Developer Docs for more explanation of these fields, but you can filter 
+		individual requests to reduce content you get back to improve performance-->
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Service Level Filter</apex:outputLabel>
+		<apex:inputText value="{!kweods.filterServiceLevel[0]}"/>
+	</apex:pageBlockSectionItem>
+
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >US Goverment Filter</apex:outputLabel>
+		<apex:inputText value="{!kweods.filterServiceLevel[1]}"/>
+	</apex:pageBlockSectionItem>
+	</apex:pageBlockSection>
+
+	<apex:pageBlockSection >
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >State Goverment Filter</apex:outputLabel>
+		<apex:inputText value="{!kweods.filterServiceLevel[2]}"/>
+	</apex:pageBlockSectionItem>
+
+	<apex:pageBlockSectionItem >
+		<apex:outputLabel >Local Government Filter</apex:outputLabel>
+		<apex:inputText value="{!kweods.filterServiceLevel[3]}"/>
+	</apex:pageBlockSectionItem>
 
 </apex:pageBlockSection>
 
 </apex:pageBlock>
+
+<!--See Developer Docs for detailed explanation of the data structure and fields/collections returned, but you get back
+a KnowWhoEODSData object which contains collections for each level of goverment you subscribe to. As such, you can loop 
+through the results as demonstrated below, or you can directly reference an officials e.g.
+kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2] will refer to the Senior Senator for US Government Data-->
 
 <apex:repeat value="{!kweods.kweodsdata.KnowWho.USGovernment.ElectedOfficials}" var="kwus">
-<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
-<apex:pageBlockSection >
+	<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
+			<apex:pageBlockSection >
 
-<apex:pageBlockSectionItem >
-<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel />
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel />
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Name</apex:outputLabel>
-<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >Name</apex:outputLabel>
+				<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Position</apex:outputLabel>
-<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >Position</apex:outputLabel>
+				<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Website</apex:outputLabel>
-<apex:outputLink target="_blank" value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >Website</apex:outputLabel>
+				<apex:outputLink target="_blank" value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Web Form</apex:outputLabel>
-<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >Web Form</apex:outputLabel>
+				<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Main Phone Number</apex:outputLabel>
-<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >Main Phone Number</apex:outputLabel>
+				<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
+			</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel />
-</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel />
+			</apex:pageBlockSectionItem>
 
-<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+			<!--See Developer Docs for detailed explanation of the data structure and fields/collections returned, but some 
+			officials also have sub collections of data e.g. top staffers, which you can also iterate through-->
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
-<apex:outputText value="{!kwusstaff.FullName}"/>
-</apex:pageBlockSectionItem>
+			<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
+					<apex:outputText value="{!kwusstaff.FullName}"/>
+				</apex:pageBlockSectionItem>
+			</apex:repeat>
+
+			</apex:pageBlockSection>
+	</apex:pageBlock>
+
 </apex:repeat>
 
-</apex:pageBlockSection>
-</apex:pageBlock>
-
-</apex:repeat>
+<!--See Developer Docs for detailed explanation of the data structure and fields/collections returned.
+Note how State Data is a separate collection in the Object, but the struture is the same - Exec then Leg.-->
 
 <apex:repeat value="{!kweods.kweodsdata.KnowWho.StateGovernment.ElectedOfficials}" var="kwus">
-<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
+	<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
 
-<apex:pageBlockSection >
+		<apex:pageBlockSection >
 
-<apex:pageBlockSectionItem >
-<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel />
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel />
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Name</apex:outputLabel>
-<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Name</apex:outputLabel>
+			<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Position</apex:outputLabel>
-<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Position</apex:outputLabel>
+			<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Website</apex:outputLabel>
-<apex:outputLink value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Website</apex:outputLabel>
+			<apex:outputLink value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Web Form</apex:outputLabel>
-<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Web Form</apex:outputLabel>
+			<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
+		</apex:pageBlockSectionItem>
 
-<apex:pageBlockSectionItem >
-<apex:outputLabel >Main Phone Number</apex:outputLabel>
-<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
-</apex:pageBlockSectionItem>
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Main Phone Number</apex:outputLabel>
+			<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
+		</apex:pageBlockSectionItem>
 
-<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
-<apex:pageBlockSectionItem >
-<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
-<apex:outputText value="{!kwusstaff.FullName}"/>
-</apex:pageBlockSectionItem>
+		<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
+			<apex:outputText value="{!kwusstaff.FullName}"/>
+		</apex:pageBlockSectionItem>
+		</apex:repeat>
+
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+
 </apex:repeat>
 
+<!--See Developer Docs for detailed explanation of the data structure and fields/collections returned.
+Note how Local Data is a separate collection in the Object, but the struture is the same - Exec then Leg.-->
+<apex:repeat value="{!kweods.kweodsdata.KnowWho.LocalGovernment.ElectedOfficials}" var="kwus">
+	<apex:pageBlock title="{!kwus.PersonInformation.FullName}">
 
-</apex:pageBlockSection>
-</apex:pageBlock>
+		<apex:pageBlockSection >
+
+		<apex:pageBlockSectionItem >
+			<apex:image url="{!kwus.PersonInformation.PhotoUrl}"/>
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel />
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Name</apex:outputLabel>
+			<apex:outputText value="{!kwus.PersonInformation.FullName}"/>
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Position</apex:outputLabel>
+			<apex:outputText >{!kwus.PositionInformation.Title}</apex:outputText>
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Website</apex:outputLabel>
+			<apex:outputLink value="{!kwus.WebSocialMedia.Website}">{!kwus.WebSocialMedia.Website}</apex:outputLink>
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Web Form</apex:outputLabel>
+			<apex:outputText value="{!kwus.WebSocialMedia.Webform}"/>
+		</apex:pageBlockSectionItem>
+
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel >Main Phone Number</apex:outputLabel>
+			<apex:outputText value="{!kwus.PrimaryOfficeInformation.Phone}"/>
+		</apex:pageBlockSectionItem>
+
+		<apex:repeat value="{!kwus.Staffers}" var="kwusstaff">
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel >{!kwusstaff.Title}</apex:outputLabel>
+				<apex:outputText value="{!kwusstaff.FullName}"/>
+			</apex:pageBlockSectionItem>
+		</apex:repeat>
+
+		</apex:pageBlockSection>
+	</apex:pageBlock>
 
 </apex:repeat>
 

@@ -4,116 +4,120 @@
 <apex:messages />
 <apex:pagemessages />
 
+<!--We use action regions so we can show/hide filters. You will not normally need these for simple EOCS requests-->
 <apex:actionregion >
+<!--Error Code is returned as TRUE when trial/EOCS trial service has not been setup-->
 <apex:pageBlock title="Send Request" rendered="{!!bError}" >
-<apex:pageBlockbuttons location="top" >
-<apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
-</apex:pageBlockbuttons>
+  <apex:pageBlockbuttons location="top" >
+    <apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
+  </apex:pageBlockbuttons>
 
 
+  <!--All fields marked as required below are required for a successful submission to EOCS. 
+  This is because KnowWho has to submit data via Congressional Web Forms, and they typically require this information-->
 
-<apex:pageBlockSection >
-<apex:pageblocksectionitem >
+  <apex:pageBlockSection >
+    <apex:pageblocksectionitem >
 
-<apex:outputLabel value="Prefix"/>
-  <apex:outputPanel styleClass="requiredInput" layout="block">
-  <apex:outputPanel styleClass="requiredBlock" layout="block" />
-<apex:selectList required="TRUE" size="1" value="{!finaleocs.kweos__Prefix_Code__c}">
-<apex:selectOptions value="{!kwlists.prefixes}"/>
-</apex:selectList>
-  </apex:outputPanel>
-</apex:pageblocksectionitem>
+    <!--To make select lists appear required, we add this styling-->
+      <apex:outputLabel value="Prefix"/>
+      <apex:outputPanel styleClass="requiredInput" layout="block">
+      <apex:outputPanel styleClass="requiredBlock" layout="block" />
+      <apex:selectList required="TRUE" size="1" value="{!finaleocs.kweos__Prefix_Code__c}">
+      <apex:selectOptions value="{!kwlists.prefixes}"/>
+      </apex:selectList>
+        </apex:outputPanel>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Street Address"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Address1__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="Street Address"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__Address1__c}"/>
+    </apex:pageblocksectionitem>
 
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="First Name"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__First_Name__c}"/>
-</apex:pageblocksectionitem>
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Street Address (2)"/>
-<apex:inputField value="{!finaleocs.kweos__Address2__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="First Name"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__First_Name__c}"/>
+      </apex:pageblocksectionitem>
+      <apex:pageblocksectionitem >
+      <apex:outputLabel value="Street Address (2)"/>
+      <apex:inputField value="{!finaleocs.kweos__Address2__c}"/>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Last Name"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Last_Name__c}"/>
-</apex:pageblocksectionitem>
-<apex:pageblocksectionitem >
-<apex:outputLabel value="City"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__City__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="Last Name"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__Last_Name__c}"/>
+    </apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="City"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__City__c}"/>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Suffix"/>
-<apex:selectList size="1" value="{!finaleocs.kweos__Suffix_Code__c}">
-<apex:selectOptions value="{!kwlists.suffixes}"/>
-</apex:selectList>
-</apex:pageblocksectionitem>
-<apex:pageblocksectionitem >
-<apex:outputLabel value="State"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__State__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="Suffix"/>
+      <apex:selectList size="1" value="{!finaleocs.kweos__Suffix_Code__c}">
+      <apex:selectOptions value="{!kwlists.suffixes}"/>
+      </apex:selectList>
+    </apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="State"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__State__c}"/>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Phone Number"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Phone__c}"/>
-</apex:pageblocksectionitem>
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Zip"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Postal_Code__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+      <apex:outputLabel value="Phone Number"/>
+      <apex:inputField required="TRUE" value="{!finaleocs.kweos__Phone__c}"/>
+    </apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+     <apex:outputLabel value="Zip"/>
+     <apex:inputField required="TRUE" value="{!finaleocs.kweos__Postal_Code__c}"/>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Fax"/>
-<apex:inputField value="{!finaleocs.kweos__Fax__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+     <apex:outputLabel value="Fax"/>
+     <apex:inputField value="{!finaleocs.kweos__Fax__c}"/>
+    </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Email"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Email__c}"/>
-</apex:pageblocksectionitem>
+    <apex:pageblocksectionitem >
+     <apex:outputLabel value="Email"/>
+     <apex:inputField required="TRUE" value="{!finaleocs.kweos__Email__c}"/>
+    </apex:pageblocksectionitem>
 
-</apex:pageBlockSection>
+    </apex:pageBlockSection>
 </apex:pageBlock>
 
-<apex:pageBlock rendered="{!!bError}" >
-<apex:pageBlockbuttons location="bottom" >
-<apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
-</apex:pageBlockbuttons>
+  <apex:pageBlock rendered="{!!bError}" >
+    <apex:pageBlockbuttons location="bottom" >
+      <apex:commandbutton value="Submit Request" action="{!submitrecordtokw}"/>
+    </apex:pageBlockbuttons>
 
-<apex:pageBlockSection columns="1">
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Issue"/>
+  <!--You would not typically expose Issue or Subject to someone entering a message-->
 
- <apex:outputPanel styleClass="requiredInput" layout="block">
- <apex:outputPanel styleClass="requiredBlock" layout="block" />
+  <apex:pageBlockSection columns="1">
+  <apex:pageblocksectionitem >
+    <apex:outputLabel value="Issue"/>
+    <apex:outputPanel styleClass="requiredInput" layout="block">
+    <apex:outputPanel styleClass="requiredBlock" layout="block" />
+    <apex:selectList size="1" value="{!finaleocs.kweos__Issue_Code__c}" required="true">
+    <apex:selectOptions value="{!kwlists.issues}"/>
+    </apex:selectList>
+    </apex:outputPanel>
 
-<apex:selectList size="1" value="{!finaleocs.kweos__Issue_Code__c}" required="true">
-<apex:selectOptions value="{!kwlists.issues}"/>
-</apex:selectList>
+  </apex:pageblocksectionitem>
 
-</apex:outputPanel>
+  <apex:pageblocksectionitem >
+   <apex:outputLabel value="Subject"/>
+   <apex:inputField required="TRUE" value="{!finaleocs.kweos__Subject__c}"/>
+  </apex:pageblocksectionitem>
 
-</apex:pageblocksectionitem>
+  <apex:pageblocksectionitem >
+    <apex:outputLabel value="Message"/>
+    <apex:inputField style="width:400px;height:100px" required="TRUE" value="{!finaleocs.kweos__Message__c}"/>
+  </apex:pageblocksectionitem>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Subject"/>
-<apex:inputField required="TRUE" value="{!finaleocs.kweos__Subject__c}"/>
-</apex:pageblocksectionitem>
+  </apex:pageBlockSection>
 
-<apex:pageblocksectionitem >
-<apex:outputLabel value="Message"/>
-<apex:inputField style="width:400px;height:100px" required="TRUE" value="{!finaleocs.kweos__Message__c}"/>
-</apex:pageblocksectionitem>
-
-</apex:pageBlockSection>
-
-</apex:pageblock>
+  </apex:pageblock>
 </apex:actionregion>
 
 <apex:outputpanel id="thefilters">
@@ -125,6 +129,14 @@
 </apex:pageBlockbuttons>
 
 <apex:pageBlockSection rendered="{!bshowfilters}">
+
+<!--There are two sets of Filters: Target and Restrictive
+The Target set determines which levels of goverment should be receive a message, regardless of your subscription. 
+For this demo page, US Senate and US House were defaulted to TRUE in the controller
+
+Restrictive - see Developer Docs for more details, but for an indivual request, you can also restrict at a more granular level
+
+We display these by means of a field set on the EOCS object but they can (and almost always should) be set directly in the controller. -->
 
 <apex:repeat value="{!$ObjectType.kweos__EOCS_Data__c.FieldSets.kweos__Message_Recipient_Fields}" var="f"> 
 
@@ -149,6 +161,7 @@
 <apex:pageBlock title="Responses" >
 <apex:pageblocksection >
 
+<!--You can display a success message to user based on response code-->
 <apex:pageblocksectionitem >
 <apex:outputLabel value="Response from Service"/>
 <apex:outputText value="{!sKWReturnCode}"/>
@@ -157,6 +170,7 @@
         <apex:outputLabel />
     </apex:pageblocksectionitem>
 
+<!--For this demo page, you can see the KnowWho Ids that received the message. You can use these in the controller to identify/store information for reporting-->
 <apex:repeat value="{!sContactedCodes}" var="r">
 <apex:pageblocksectionitem >
 <apex:outputText value="{!r}"/>
