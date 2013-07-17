@@ -43,6 +43,15 @@ public KWEOS_Demo_Controller() {
        sEODSReturnCode = kwd.sReturnCode;
        finaleocs.kweos__subject__c = 'Sign our petition to tell the Government to use Cloud Computing!'; //we can default message on EOCS request
        sContactResults = new List<String> ();
+
+       /*We can reduce the volume of data we get back (and speed up response with additional fitlers
+       See Dev Guide for more info on each filter */
+       kwd.filterServiceLevel[0] = 'Basic';
+       kwd.filterServiceLevel[1] = 'Y';
+       kwd.filterServiceLevel[2] = 'N';
+       kwd.filterServiceLevel[3] = 'N';
+   
+   
        }
 
 
@@ -53,17 +62,7 @@ public pagereference getDatabyAddress() {
 try{
 //for this sample code, we invoke EODS using data from instance of EOCS Object, rather than string variables
 kwd.generateDatabyAddress(finaleocs.kweos__Address1__c, finaleocs.kweos__City__c, finaleocs.kweos__State__c, finaleocs.kweos__Postal_Code__c);
-finaleocs.kweos__Plus_4__c = kwd.kweodsdata.KnowWho.Address.Plus4;
-sLatitude = kwd.kweodsdata.KnowWho.Address.Latitude;
-sLongitude = kwd.kweodsdata.KnowWho.Address.Longitude;
-
-/*We can access EODS result object in Controller - and then extract values such as KNowWho Ids here.
-We can use that data to match yo Sample Code below explains how to combine KnowWho's Web Services on a single page
-*/
-  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.ContactId);
-  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.ContactId);
-  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.ContactId);
-    
+setEODSFields();    
 bShowEOCSButton = TRUE;
 }
 
@@ -76,6 +75,8 @@ public pagereference getDatabyZip4() {
 //Using EOCS Object to get data
 try{
 kwd.generateDatabyZip4(finaleocs.kweos__Postal_Code__c, finaleocs.kweos__Plus_4__c );
+setEODSFields();    
+bShowEOCSButton = TRUE;
 }
 Catch (Exception Ex) {
 }
@@ -170,6 +171,21 @@ for (SelectOption a: kwlists.issues) {
 private void setupdefaulttargets() {
 finaleocs.kweos__Send_to_US_Senate__c = TRUE;
 finaleocs.kweos__Send_to_US_House__c = TRUE;
+
+}
+
+private void setEODSFields () {
+//We get back Plus4, Lat and Lon, so we can save them for future use
+finaleocs.kweos__Plus_4__c = kwd.kweodsdata.KnowWho.Address.Plus4;
+sLatitude = kwd.kweodsdata.KnowWho.Address.Latitude;
+sLongitude = kwd.kweodsdata.KnowWho.Address.Longitude;
+
+/*We can access EODS result object in Controller - and then extract values such as KNowWho Ids here.
+We can use that data to match yo Sample Code below explains how to combine KnowWho's Web Services on a single page
+*/
+  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[2].PersonInformation.ContactId);
+  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[3].PersonInformation.ContactId);
+  sContactResults.add(kwd.kweodsdata.KnowWho.USGovernment.ElectedOfficials[4].PersonInformation.ContactId);
 
 }
 

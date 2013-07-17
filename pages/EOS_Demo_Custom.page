@@ -1,6 +1,5 @@
 <apex:page controller="KWEOS_Demo_Controller" cache="FALSE" sidebar="false" showHeader="FALSE" standardStylesheets="FALSE">
 
-
 <!--This demo page is designed to show how you can buld highly cusomtized pages using the KnowWho Services and Sample Code
 So we override standard styling to demonstrate how we can build a cutom UI and capture petitions. But we can use the same page to also
 send messages via EOCS -->

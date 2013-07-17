@@ -4,7 +4,7 @@
     <label>EOCS Demo</label>
     <packageVersions>
         <majorNumber>1</majorNumber>
-        <minorNumber>5</minorNumber>
+        <minorNumber>7</minorNumber>
         <namespace>kweos</namespace>
     </packageVersions>
 </ApexPage>
